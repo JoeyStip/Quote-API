@@ -2,9 +2,33 @@ const express = require('express');
 const app = express();
 
 const { quotes } = require('./data');
-const { getRandomElement } = require('./utils');
+const { getRandomElement, searchQuotes } = require('./utils');
 
 const PORT = process.env.PORT || 4001;
 
 app.use(express.static('public'));
 
+app.listen(PORT, ()=>{
+    console.log('app listening on port #' + PORT);
+});
+
+app.get('/api/quotes/random', (req, res, next)=>{
+    const quote = getRandomElement(quotes);
+    res.status(200).send({quote});
+});
+
+app.get('/api/quotes/:person', (req, res, next)=>{
+    const person = req.params.person;
+    
+    if(person){
+        const foundQuotes = searchQuotes(quotes, person);
+        if(foundQuotes){
+            res.status(200).send();
+        } else {
+            //res.status(404).send('Not found');
+        };
+    } else {
+        console.log('test');
+        res.status(200).send(quotes);
+    };
+});
