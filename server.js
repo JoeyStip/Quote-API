@@ -17,18 +17,28 @@ app.get('/api/quotes/random', (req, res, next)=>{
     res.status(200).send({quote});
 });
 
-app.get('/api/quotes/:person', (req, res, next)=>{
-    const person = req.params.person;
-    
+app.get('/api/quotes', (req, res, next)=>{
+    const person = req.query.person;
     if(person){
         const foundQuotes = searchQuotes(quotes, person);
         if(foundQuotes){
-            res.status(200).send();
+            res.status(200).send(foundQuotes);
         } else {
-            //res.status(404).send('Not found');
+            res.status(404).send('Not found');
         };
     } else {
-        console.log('test');
-        res.status(200).send(quotes);
+        res.status(200).send({quotes});
     };
 });
+
+app.post('/api/quotes', (req, res, next)=>{
+    const quote = req.query.quote;
+    const person = req.query.person;
+    if(quote && person){
+        const quoteToAdd = {"quote": quote, "person": person};
+        quotes.push(quoteToAdd);
+        res.status(200).send({"quote":quoteToAdd})
+    } else {
+        res.status(400).send("Invalid Entry");
+    }
+})

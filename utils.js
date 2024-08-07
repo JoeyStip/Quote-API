@@ -4,7 +4,7 @@ const getRandomElement = arr => {
 };
 
 const searchQuotes= (arr, person) =>{
-  return { quotes: arr.filter((quote)=>quote.person = person) }
+  return { quotes: arr.filter((quote)=>quote.person === person) }
 };
 
 module.exports = {
