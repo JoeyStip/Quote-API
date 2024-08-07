@@ -40,5 +40,18 @@ app.post('/api/quotes', (req, res, next)=>{
         res.status(200).send({"quote":quoteToAdd})
     } else {
         res.status(400).send("Invalid Entry");
+    };
+});
+
+app.put('/api/quotes/:id', (req, res, next)=>{
+    const quoteID = req.params.id;
+    const updatedQuote = req.query.quote;
+    const updatedPerson = req.query.person;
+    if(updatedQuote && updatedPerson){
+        quotes[quoteID].quote = updatedQuote;
+        quotes[quoteID].person = updatedPerson;
+        res.status(200).send(quotes[quoteID]);
+    } else {
+        res.status(400).send("Invalid Entry");
     }
-})
+});

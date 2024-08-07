@@ -1,6 +1,7 @@
 const fetchAllButton = document.getElementById('fetch-quotes');
 const fetchRandomButton = document.getElementById('fetch-random');
 const fetchByAuthorButton = document.getElementById('fetch-by-author');
+const updateButton = document.getElementById('update-info');
 
 const quoteContainer = document.getElementById('quote-container');
 const quoteText = document.querySelector('.quote');
@@ -30,6 +31,25 @@ const renderQuotes = (quotes = []) => {
     quoteContainer.innerHTML = '<p>Your request returned no quotes.</p>';
   }
 }
+
+updateButton.addEventListener('click', ()=>{
+  fetch('/api/quotes',{
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(reponse =>{
+    if(response.ok){
+      return response.json();
+    } else {
+      renderError(response);
+    }
+  }).then(response=>{
+    renderQuotes(response.quotes)
+  });
+})
 
 fetchAllButton.addEventListener('click', () => {
   fetch('/api/quotes')
